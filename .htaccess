@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Hilangkan ekstensi .php dari URL
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# Route detail produk: /produk/1
+RewriteRule ^produk/([0-9]+)/?$ detail.php?id=$1 [L,QSA]

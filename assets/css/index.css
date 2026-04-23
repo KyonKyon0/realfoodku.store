@@ -1,0 +1,181 @@
+:root {
+    --primary: #0f766e;
+    --secondary: #0ea5e9;
+    --glass: rgba(255, 255, 255, 0.78);
+    --border: rgba(255, 255, 255, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    color: #1f2937;
+    background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: #334155;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.hero {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 72px 20px 32px;
+    text-align: center;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: clamp(2rem, 8vw, 3.8rem);
+    background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p { color: #6b7280; }
+
+.search-container { margin-top: 24px; }
+
+.glass-search {
+    display: flex;
+    gap: 10px;
+    max-width: 650px;
+    margin: 0 auto;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 10px;
+}
+
+.glass-search input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 16px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.glass-search button {
+    border: none;
+    border-radius: 12px;
+    padding: 0 22px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.main-content {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 0 20px 40px;
+}
+
+.alert {
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+}
+
+.alert.error {
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    background: #fef2f2;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.product-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 16px;
+}
+
+.category-tag {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #166534;
+    background: #dcfce7;
+}
+
+.meta { color: #6b7280; font-size: 0.9rem; }
+.rating { margin-top: 6px; font-weight: 600; color: #92400e; }
+
+.btn-action {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    background: #e2e8f0;
+    color: #0f172a;
+    font-weight: 600;
+}
+
+footer {
+    padding: 28px 20px;
+    text-align: center;
+    color: #64748b;
+}
+
+@media (max-width: 700px) {
+    .glass-search {
+        flex-direction: column;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+
+    .glass-search input {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+    }
+
+    .glass-search button {
+        height: 44px;
+    }
+
+    .nav-links { display: none; }
+}
