@@ -1,13 +1,13 @@
 # realfoodku.store
 
-Website PHP + MySQL bertema data makanan, minuman, dan kosmetik.
+Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita dummy.
 
 ## Fitur
 - URL tanpa `.php` (contoh: `/produk/1`).
 - Halaman depan (`index.php`) menampilkan **berita dummy** terlebih dahulu.
-- Terdapat kategori **Makanan, Minuman, Kosmetik**.
-- Kosmetik dapat ditandai **Demo**, dan mode demo per kategori bisa diubah lewat variabel PHP (`$showDemoByCategory`).
-- Tiap produk memiliki hashtag kategori (contoh: `#sosis`, `#ayam`, `#energy-drink`, `#skincare`).
+- Berita di halaman depan memakai data dari tabel `berita`, dan otomatis pakai dummy jika tabel kosong.
+- Produk yang ditampilkan di homepage fokus kategori **Makanan** dan **Minuman** (ditarik dari database).
+- Tiap produk memiliki hashtag kategori (contoh: `#sosis`, `#ayam`, `#energy-drink`).
 - Banner kuning paling atas untuk bahan berisiko menurut regulasi Eropa.
 - Footer hitam gelap dengan link dummy: Source, Github, Instagram, dll.
 
