@@ -1,37 +1,42 @@
 # realfoodku.store
 
-Website PHP + MySQL bertema data makanan dan minuman.
+Website PHP + MySQL bertema data makanan, minuman, dan kosmetik.
 
 ## Fitur
 - URL tanpa `.php` (contoh: `/produk/1`).
-- Search produk berdasarkan nama produk, merk, atau ingredient.
-- Menampilkan **merk, ingredient, kandungan gizi** di listing dan detail.
-- Menampilkan banner kuning paling atas berisi daftar **bahan berisiko menurut Eropa**.
-- Tombol link beli untuk masing-masing produk.
+- Halaman depan (`index.php`) menampilkan **berita dummy** terlebih dahulu.
+- Terdapat kategori **Makanan, Minuman, Kosmetik**.
+- Kosmetik dapat ditandai **Demo**, dan mode demo per kategori bisa diubah lewat variabel PHP (`$showDemoByCategory`).
+- Tiap produk memiliki hashtag kategori (contoh: `#sosis`, `#ayam`, `#energy-drink`, `#skincare`).
+- Banner kuning paling atas untuk bahan berisiko menurut regulasi Eropa.
+- Footer hitam gelap dengan link dummy: Source, Github, Instagram, dll.
 
-## Struktur database terbaru
-- `produk`: data utama produk & merk.
+## Struktur database (harus sesuai SQL)
+- `produk`: data produk + merk + kategori + flag demo.
+- `berita`: berita dummy untuk halaman depan.
 - `kandungan_gizi`: ingredient + nilai gizi per produk.
-- `bahan_berbahaya_eropa`: master bahan yang dibatasi/dianggap berisiko di Eropa.
+- `bahan_berbahaya_eropa`: master bahan berisiko/dibatasi.
 - `produk_bahan_berbahaya`: relasi produk dengan bahan berisiko.
+- `hashtag`: master hashtag per kategori.
+- `produk_hashtag`: relasi produk dengan hashtag.
 
 ## Struktur file utama
-- `.htaccess` : rewrite URL agar tanpa ekstensi `.php`.
-- `index.php` : daftar produk + pencarian + banner bahan berisiko.
-- `detail.php` : detail ingredient, kandungan gizi, bahan berisiko, dan link beli.
-- `assets/css/index.css` : style halaman utama.
-- `assets/js/index.js` : interaksi UI ringan halaman utama.
-- `database.sql` : schema + data awal MySQL.
-- `config.php` : konfigurasi database.
+- `.htaccess` : rewrite URL tanpa `.php`.
+- `index.php` : halaman depan berita + kategori + search + produk.
+- `detail.php` : detail ingredient, gizi, hashtag, bahan berisiko.
+- `assets/css/index.css` : style halaman utama + footer gelap.
+- `assets/js/index.js` : interaksi UI ringan.
+- `database.sql` : schema + data awal.
+- `config.php` : konfigurasi DB.
 - `db.php` : koneksi PDO.
 
 ## Cara menjalankan
-1. Buat database dan isi data:
+1. Import database:
    ```bash
    mysql -u root -p < database.sql
    ```
-2. Ubah kredensial di `config.php` jika perlu.
-3. Jalankan server PHP:
+2. Sesuaikan `config.php` jika host/user/password berbeda.
+3. Jalankan:
    ```bash
    php -S localhost:8000
    ```
@@ -39,22 +44,8 @@ Website PHP + MySQL bertema data makanan dan minuman.
    - Home: `http://localhost:8000/`
    - Detail: `http://localhost:8000/produk/1`
 
-> Catatan: Untuk rewrite `.htaccess` bekerja penuh, gunakan Apache dengan `mod_rewrite` aktif.
-
-
-## Troubleshooting koneksi database
-- Error **"Koneksi database gagal"** paling sering terjadi karena nama database tidak sama.
-- Di project ini nama DB harus konsisten: `db_realfoodku_jkt_id` (lihat `config.php` dan baris `CREATE DATABASE` / `USE` di `database.sql`).
-- Setelah memastikan sama, jalankan lagi:
-  ```bash
-  mysql -u root -p < database.sql
-  ```
-- Jika masih gagal, cek `db_user` dan `db_pass` pada `config.php` sesuai akun MySQL server Anda.
-
-
 ## Mapping sesuai panel hosting Anda
-Dari screenshot panel DB:
 - **Database name**: `db_realfoodku_jkt_id`
 - **Username**: `DB_REALFOODKU_JKT_ID`
 
-Nilai tersebut sudah dipakai di `config.php`. Jika password di panel berubah, update `db_pass` di `config.php` sesuai password terbaru.
+Jika password berubah, update `db_pass` pada `config.php`.
