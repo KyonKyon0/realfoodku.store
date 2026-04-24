@@ -44,9 +44,17 @@ Website PHP + MySQL bertema data makanan dan minuman.
 
 ## Troubleshooting koneksi database
 - Error **"Koneksi database gagal"** paling sering terjadi karena nama database tidak sama.
-- Di project ini nama DB harus konsisten: `DB_REALFOODKU_JKT_ID` (lihat `config.php` dan baris `CREATE DATABASE` / `USE` di `database.sql`).
+- Di project ini nama DB harus konsisten: `db_realfoodku_jkt_id` (lihat `config.php` dan baris `CREATE DATABASE` / `USE` di `database.sql`).
 - Setelah memastikan sama, jalankan lagi:
   ```bash
   mysql -u root -p < database.sql
   ```
 - Jika masih gagal, cek `db_user` dan `db_pass` pada `config.php` sesuai akun MySQL server Anda.
+
+
+## Mapping sesuai panel hosting Anda
+Dari screenshot panel DB:
+- **Database name**: `db_realfoodku_jkt_id`
+- **Username**: `DB_REALFOODKU_JKT_ID`
+
+Nilai tersebut sudah dipakai di `config.php`. Jika password di panel berubah, update `db_pass` di `config.php` sesuai password terbaru.

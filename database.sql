@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS DB_REALFOODKU_JKT_ID CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE DB_REALFOODKU_JKT_ID;
+CREATE DATABASE IF NOT EXISTS db_realfoodku_jkt_id CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE db_realfoodku_jkt_id;
 
 DROP TABLE IF EXISTS produk_bahan_berbahaya;
 DROP TABLE IF EXISTS kandungan_gizi;
