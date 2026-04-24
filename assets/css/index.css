@@ -1,3 +1,17 @@
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+}
+
+h1, h2, h3, h4, p {
+    margin-top: 0;
+}
+
 :root {
     --bg: #f1f7fb;
     --card: #ffffff;
@@ -25,9 +39,9 @@ body {
     border-bottom: 1px solid var(--border);
 }
 .nav { min-height: 62px; display: flex; justify-content: space-between; align-items: center; }
-.brand { text-decoration: none; color: var(--primary); font-weight: 800; font-size: 1.35rem; }
+.topbar .brand { text-decoration: none; color: var(--primary); font-weight: 800; font-size: 1.35rem; }
 .nav nav { display: flex; gap: 16px; }
-.nav nav a { text-decoration: none; color: #334155; font-weight: 600; }
+.topbar .nav nav a { text-decoration: none; color: #334155; font-weight: 600; }
 
 .risk-banner { background: #fde047; border-bottom: 1px solid #f59e0b; }
 .risk-banner .shell { padding-top: 10px; padding-bottom: 10px; }
@@ -138,7 +152,7 @@ body {
 .footer-dark p { margin: 0; color: #94a3b8; }
 .footer-dark ul { list-style: none; padding: 0; margin: 0; }
 .footer-dark li { margin: 6px 0; }
-.footer-dark a { text-decoration: none; color: #cbd5e1; }
+.footer-dark a { text-decoration: none; color: #cbd5e1 !important; }
 .footer-dark a:hover { color: #38bdf8; }
 
 @media (max-width: 760px) {
