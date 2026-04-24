@@ -176,7 +176,7 @@ try {
             <h2>Berita Dummy</h2>
             <p>Konten contoh untuk halaman depan.</p>
         </div>
-        <div class="news-grid">
+        <div class="news-grid carousel" data-carousel="news">
             <?php foreach ($newsList as $news): ?>
                 <article class="news-card">
                     <span class="chip"><?= htmlspecialchars($news['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
@@ -186,6 +186,7 @@ try {
                 </article>
             <?php endforeach; ?>
         </div>
+        <div class="carousel-dots" data-dots-for="news"></div>
     </section>
 
     <section id="produk" class="block">
@@ -195,11 +196,12 @@ try {
         </div>
 
         <?php foreach (['Makanan', 'Minuman'] as $category): ?>
+            <?php $carouselKey = strtolower($category); ?>
             <h3 class="category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?></h3>
             <?php if (empty($productsByCategory[$category])): ?>
                 <div class="alert">Tidak ada data <?= strtolower($category); ?> yang cocok.</div>
             <?php else: ?>
-                <div class="product-grid">
+                <div class="product-grid carousel" data-carousel="<?= htmlspecialchars($carouselKey, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php foreach ($productsByCategory[$category] as $product): ?>
                         <article class="product-card">
                             <div class="meta-row">
@@ -229,6 +231,7 @@ try {
                         </article>
                     <?php endforeach; ?>
                 </div>
+                <div class="carousel-dots" data-dots-for="<?= htmlspecialchars($carouselKey, ENT_QUOTES, 'UTF-8'); ?>"></div>
             <?php endif; ?>
         <?php endforeach; ?>
     </section>

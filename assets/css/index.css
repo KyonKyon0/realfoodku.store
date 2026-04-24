@@ -29,7 +29,7 @@ body {
     background: linear-gradient(180deg, #e8f3fb 0%, var(--bg) 100%);
 }
 
-.shell { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+.shell { max-width: 980px; margin: 0 auto; padding: 0 16px; }
 .topbar {
     position: sticky;
     top: 0;
@@ -86,6 +86,27 @@ body {
 .news-card h3 { margin: 10px 0 8px; font-size: 1rem; }
 .news-card p { margin: 0 0 10px; color: #334155; }
 .news-card small { color: var(--muted); }
+
+.carousel-dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+.carousel-dots button {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: none;
+    background: #94a3b8;
+    opacity: .5;
+    padding: 0;
+}
+.carousel-dots button.active {
+    opacity: 1;
+    background: #0ea5e9;
+}
+
 
 .category-title { margin: 20px 0 10px; }
 .product-grid {
@@ -160,4 +181,24 @@ body {
     .search { flex-direction: column; }
     .search button { height: 42px; }
     .nutri { grid-template-columns: 1fr; }
+
+    .carousel {
+        display: flex !important;
+        overflow-x: auto;
+        gap: 12px;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+    .carousel::-webkit-scrollbar { display: none; }
+
+    .news-card,
+    .product-card {
+        min-width: 86%;
+        scroll-snap-align: start;
+    }
+
+    .carousel-dots {
+        display: flex;
+    }
 }
