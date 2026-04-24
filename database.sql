@@ -1,23 +1,67 @@
 CREATE DATABASE IF NOT EXISTS realfoodku CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE realfoodku;
 
+DROP TABLE IF EXISTS produk_bahan_berbahaya;
+DROP TABLE IF EXISTS kandungan_gizi;
+DROP TABLE IF EXISTS bahan_berbahaya_eropa;
 DROP TABLE IF EXISTS produk;
+
 CREATE TABLE produk (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nama_produk VARCHAR(150) NOT NULL,
     merk VARCHAR(100) NOT NULL,
     kategori ENUM('Makanan', 'Minuman') NOT NULL,
     deskripsi_singkat TEXT NOT NULL,
-    ingredient TEXT NOT NULL,
     link_beli VARCHAR(255) NOT NULL,
-    rating_data DECIMAL(3,1) NOT NULL DEFAULT 7.0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
-INSERT INTO produk (nama_produk, merk, kategori, deskripsi_singkat, ingredient, link_beli, rating_data) VALUES
-('Indomie Goreng', 'Indomie', 'Makanan', 'Mi instan goreng populer dengan rasa gurih manis.', 'Tepung terigu, minyak nabati, garam, gula, bumbu perisa, cabai bubuk.', 'https://www.tokopedia.com/search?st=product&q=indomie%20goreng', 8.7),
-('Oreo Original', 'Oreo', 'Makanan', 'Biskuit sandwich coklat dengan krim vanila.', 'Tepung terigu, gula, minyak sawit, kakao bubuk, pengembang, lesitin kedelai.', 'https://www.tokopedia.com/search?st=product&q=oreo%20original', 8.1),
-('Ultra Milk Full Cream', 'Ultra Milk', 'Minuman', 'Susu UHT full cream siap minum.', 'Susu sapi segar, vitamin A, vitamin D3.', 'https://www.tokopedia.com/search?st=product&q=ultra%20milk%20full%20cream', 8.9),
-('Teh Botol Sosro', 'Sosro', 'Minuman', 'Minuman teh melati dalam kemasan botol.', 'Air, gula, ekstrak teh melati.', 'https://www.tokopedia.com/search?st=product&q=teh%20botol%20sosro', 8.3),
-('Pocari Sweat', 'Pocari', 'Minuman', 'Minuman ion pengganti cairan tubuh.', 'Air, gula, asam sitrat, natrium klorida, kalium klorida, magnesium karbonat.', 'https://www.tokopedia.com/search?st=product&q=pocari%20sweat', 8.6),
-('Chitato Sapi Panggang', 'Chitato', 'Makanan', 'Keripik kentang dengan rasa sapi panggang.', 'Kentang, minyak nabati, bumbu sapi panggang, gula, garam, penyedap rasa.', 'https://www.tokopedia.com/search?st=product&q=chitato%20sapi%20panggang', 7.8);
+CREATE TABLE kandungan_gizi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    produk_id INT NOT NULL,
+    ingredient TEXT NOT NULL,
+    energi_kkal DECIMAL(6,2) NOT NULL DEFAULT 0,
+    gula_g DECIMAL(6,2) NOT NULL DEFAULT 0,
+    garam_mg DECIMAL(8,2) NOT NULL DEFAULT 0,
+    lemak_g DECIMAL(6,2) NOT NULL DEFAULT 0,
+    protein_g DECIMAL(6,2) NOT NULL DEFAULT 0,
+    takaran_saji VARCHAR(100) NOT NULL,
+    FOREIGN KEY (produk_id) REFERENCES produk(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE bahan_berbahaya_eropa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_bahan VARCHAR(150) NOT NULL UNIQUE,
+    status_eropa VARCHAR(80) NOT NULL,
+    alasan TEXT NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE produk_bahan_berbahaya (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    produk_id INT NOT NULL,
+    bahan_id INT NOT NULL,
+    catatan VARCHAR(255) DEFAULT '',
+    FOREIGN KEY (produk_id) REFERENCES produk(id) ON DELETE CASCADE,
+    FOREIGN KEY (bahan_id) REFERENCES bahan_berbahaya_eropa(id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_produk_bahan (produk_id, bahan_id)
+) ENGINE=InnoDB;
+
+INSERT INTO produk (nama_produk, merk, kategori, deskripsi_singkat, link_beli) VALUES
+('Soda Jeruk X', 'Merk A', 'Minuman', 'Minuman berkarbonasi rasa jeruk.', 'https://www.tokopedia.com/search?st=product&q=soda%20jeruk%20x'),
+('Sosis Siap Saji Y', 'Merk B', 'Makanan', 'Sosis instan untuk camilan cepat.', 'https://www.tokopedia.com/search?st=product&q=sosis%20siap%20saji%20y'),
+('Permen Warna Mix', 'Merk C', 'Makanan', 'Permen buah berwarna-warni.', 'https://www.tokopedia.com/search?st=product&q=permen%20warna%20mix');
+
+INSERT INTO kandungan_gizi (produk_id, ingredient, energi_kkal, gula_g, garam_mg, lemak_g, protein_g, takaran_saji) VALUES
+(1, 'Air berkarbonasi, gula, perisa jeruk, Sunset Yellow FCF (E110), sodium benzoate', 140, 35, 35, 0, 0, '330 ml'),
+(2, 'Daging ayam, pati tapioka, garam, penguat rasa, sodium nitrite (E250)', 190, 2, 760, 13, 9, '75 g'),
+(3, 'Gula, sirup glukosa, pewarna Allura Red AC (E129), perisa sintetis', 160, 28, 15, 0, 0, '40 g');
+
+INSERT INTO bahan_berbahaya_eropa (nama_bahan, status_eropa, alasan) VALUES
+('Sunset Yellow FCF (E110)', 'Dibatasi ketat', 'Diduga terkait hiperaktivitas pada anak jika dikonsumsi berlebih.'),
+('Sodium nitrite (E250)', 'Dibatasi ketat', 'Dapat membentuk nitrosamin pada kondisi tertentu.'),
+('Allura Red AC (E129)', 'Dibatasi ketat', 'Perlu peringatan khusus pada label di beberapa negara Eropa.');
+
+INSERT INTO produk_bahan_berbahaya (produk_id, bahan_id, catatan) VALUES
+(1, 1, 'Terdeteksi pada komposisi minuman.'),
+(2, 2, 'Digunakan sebagai pengawet produk olahan daging.'),
+(3, 3, 'Digunakan sebagai pewarna sintetis.');
