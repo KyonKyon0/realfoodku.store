@@ -78,7 +78,7 @@ try {
     }
     unset($product);
 } catch (Throwable $e) {
-    $errorMessage = 'Koneksi database gagal. Periksa config.php dan impor database.sql.';
+    $errorMessage = 'Koneksi database gagal. Pastikan db_name di config.php sama dengan nama DB pada database.sql, lalu impor ulang database.sql.';
 }
 ?>
 <!doctype html>

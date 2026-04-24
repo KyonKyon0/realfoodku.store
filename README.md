@@ -40,3 +40,13 @@ Website PHP + MySQL bertema data makanan dan minuman.
    - Detail: `http://localhost:8000/produk/1`
 
 > Catatan: Untuk rewrite `.htaccess` bekerja penuh, gunakan Apache dengan `mod_rewrite` aktif.
+
+
+## Troubleshooting koneksi database
+- Error **"Koneksi database gagal"** paling sering terjadi karena nama database tidak sama.
+- Di project ini nama DB harus konsisten: `DB_REALFOODKU_JKT_ID` (lihat `config.php` dan baris `CREATE DATABASE` / `USE` di `database.sql`).
+- Setelah memastikan sama, jalankan lagi:
+  ```bash
+  mysql -u root -p < database.sql
+  ```
+- Jika masih gagal, cek `db_user` dan `db_pass` pada `config.php` sesuai akun MySQL server Anda.
