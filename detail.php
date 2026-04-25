@@ -104,7 +104,8 @@ if ($product) {
                 <span class="badge live">Live</span>
             <?php endif; ?>
             <span class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></span>
-            <img class="product-image" src="<?= htmlspecialchars($product['image_url'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
+            <?php $detailFallbackImage = $product['kategori'] === 'Minuman' ? 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=1200&q=80' : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80'; ?>
+            <img class="product-image" src="<?= htmlspecialchars($product['image_url'] ?: $detailFallbackImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
             <p><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
 
             <?php if (!empty($product['hashtags'])): ?>
