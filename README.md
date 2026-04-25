@@ -52,3 +52,8 @@ Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita
 - **Username**: `DB_REALFOODKU_JKT_ID`
 
 Jika password berubah, update `db_pass` pada `config.php`.
+
+
+## Fallback path tanpa rewrite
+Jika server tidak membaca `.htaccess`, halaman Nugget tetap bisa diakses melalui path fisik:
+- `/produk/nugget-ayam-crispy/` (file: `produk/nugget-ayam-crispy/index.php`)
