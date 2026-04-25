@@ -3,6 +3,7 @@ USE db_realfoodku_jkt_id;
 
 DROP TABLE IF EXISTS produk_hashtag;
 DROP TABLE IF EXISTS hashtag;
+DROP TABLE IF EXISTS produk_toko;
 DROP TABLE IF EXISTS produk_bahan_berbahaya;
 DROP TABLE IF EXISTS kandungan_gizi;
 DROP TABLE IF EXISTS bahan_berbahaya_eropa;
@@ -18,6 +19,7 @@ CREATE TABLE produk (
     deskripsi_singkat TEXT NOT NULL,
     image_url VARCHAR(255) NOT NULL,
     rating_grade CHAR(1) NOT NULL DEFAULT 'C',
+    harga_rentang_rupiah VARCHAR(60) NOT NULL DEFAULT 'Rp10.000 - Rp20.000',
     link_beli VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -63,6 +65,15 @@ CREATE TABLE produk_bahan_berbahaya (
     UNIQUE KEY uniq_produk_bahan (produk_id, bahan_id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE produk_toko (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    produk_id INT NOT NULL,
+    nama_toko VARCHAR(80) NOT NULL,
+    logo_url VARCHAR(255) NOT NULL,
+    link_beli VARCHAR(255) NOT NULL,
+    FOREIGN KEY (produk_id) REFERENCES produk(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 CREATE TABLE hashtag (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nama_tag VARCHAR(60) NOT NULL UNIQUE,
@@ -83,12 +94,12 @@ INSERT INTO berita (judul, ringkasan, kategori, sumber, image_url, link_url, tan
 ('Waspada Gula Tersembunyi', 'Produk minuman kemasan sering punya gula tambahan lebih dari rekomendasi harian.', 'Kesehatan', 'Tim Nutrisi Dummy', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80', 'https://example.com/news/waspada-gula-tersembunyi', '2026-01-15'),
 ('Cara Cek Bahan Berisiko', 'Pelajari kode aditif seperti E110, E129, dan E250 sebelum checkout.', 'Tips', 'Pusat Info Dummy', 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=1200&q=80', 'https://example.com/news/cara-cek-bahan-berisiko', '2026-02-02');
 
-INSERT INTO produk (nama_produk, merk, kategori, is_demo, deskripsi_singkat, image_url, rating_grade, link_beli) VALUES
-('Sosis Siap Saji Y', 'Merk B', 'Makanan', 0, 'Sosis instan untuk camilan cepat.', 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80', 'C', 'https://example.com/beli/sosis-y'),
-('Nugget Ayam Crispy', 'Merk D', 'Makanan', 0, 'Nugget ayam beku dengan tekstur renyah.', 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=1200&q=80', 'B', 'https://example.com/beli/nugget-ayam'),
-('Soda Jeruk X', 'Merk A', 'Minuman', 0, 'Minuman berkarbonasi rasa jeruk.', 'https://images.unsplash.com/photo-1543253539-0b8d2f82b1a6?w=1200&q=80', 'D', 'https://example.com/beli/soda-jeruk-x'),
-('Energy Drink Max', 'Merk E', 'Minuman', 0, 'Minuman energi dengan kafein dan taurin.', 'https://images.unsplash.com/photo-1589918947397-4f4111b7f6a4?w=1200&q=80', 'E', 'https://example.com/beli/energy-max'),
-('Glow Serum C', 'Merk Kos A', 'Kosmetik', 1, 'Serum pencerah wajah (data demo).', 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&q=80', 'A', 'https://example.com/beli/glow-serum-c');
+INSERT INTO produk (nama_produk, merk, kategori, is_demo, deskripsi_singkat, image_url, rating_grade, harga_rentang_rupiah, link_beli) VALUES
+('Sosis Siap Saji Y', 'Merk B', 'Makanan', 0, 'Sosis instan untuk camilan cepat.', 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80', 'C', 'Rp24.000 - Rp32.000', 'https://example.com/beli/sosis-y'),
+('Nugget Ayam Crispy', 'Merk D', 'Makanan', 0, 'Nugget ayam beku dengan tekstur renyah.', 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=1200&q=80', 'B', 'Rp39.000 - Rp57.000', 'https://example.com/beli/nugget-ayam'),
+('Soda Jeruk X', 'Merk A', 'Minuman', 0, 'Minuman berkarbonasi rasa jeruk.', 'https://images.unsplash.com/photo-1543253539-0b8d2f82b1a6?w=1200&q=80', 'D', 'Rp8.000 - Rp12.000', 'https://example.com/beli/soda-jeruk-x'),
+('Energy Drink Max', 'Merk E', 'Minuman', 0, 'Minuman energi dengan kafein dan taurin.', 'https://images.unsplash.com/photo-1589918947397-4f4111b7f6a4?w=1200&q=80', 'E', 'Rp9.000 - Rp15.000', 'https://example.com/beli/energy-max'),
+('Glow Serum C', 'Merk Kos A', 'Kosmetik', 1, 'Serum pencerah wajah (data demo).', 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&q=80', 'A', 'Rp85.000 - Rp120.000', 'https://example.com/beli/glow-serum-c');
 
 INSERT INTO kandungan_gizi (produk_id, ingredient, energi_kkal, gula_g, garam_mg, lemak_g, protein_g, takaran_saji) VALUES
 (1, 'Daging ayam, pati tapioka, garam, penguat rasa, sodium nitrite (E250)', 190, 2, 760, 13, 9, '75 g'),
@@ -125,3 +136,9 @@ INSERT INTO produk_hashtag (produk_id, hashtag_id) VALUES
 (3, 7),
 (4, 6),
 (5, 8), (5, 9), (5, 10);
+
+
+INSERT INTO produk_toko (produk_id, nama_toko, logo_url, link_beli) VALUES
+(2, 'Tokopedia', 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Logo_Tokopedia.svg', 'https://example.com/tokopedia/nugget-ayam-crispy'),
+(2, 'Shopee', 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg', 'https://example.com/shopee/nugget-ayam-crispy'),
+(2, 'Blibli', 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Blibli_logo.svg', 'https://example.com/blibli/nugget-ayam-crispy');

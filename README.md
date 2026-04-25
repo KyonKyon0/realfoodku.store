@@ -11,10 +11,12 @@ Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita
 - Tiap produk memiliki hashtag kategori (contoh: `#sosis`, `#ayam`, `#energy-drink`).
 - Banner kuning paling atas untuk bahan berisiko menurut regulasi Eropa.
 - Footer hitam gelap dengan link dummy: Source, Github, Instagram, dll.
+- Subpage khusus Nugget Ayam Crispy: menampilkan gambar, kalori, daftar bahan, rating, range harga rupiah, serta tombol beli yang membuka pilihan 3 toko dummy.
 
 ## Struktur database (harus sesuai SQL)
-- `produk`: data produk + merk + kategori + flag demo + `image_url` produk + `rating_grade` A-F.
+- `produk`: data produk + merk + kategori + flag demo + `image_url` produk + `rating_grade` A-F + `harga_rentang_rupiah`.
 - `berita`: berita dummy untuk halaman depan + kolom `link_url` untuk klik card.
+- `produk_toko`: daftar toko (logo + link dummy) untuk opsi beli produk tertentu.
 - `kandungan_gizi`: ingredient + nilai gizi per produk.
 - `bahan_berbahaya_eropa`: master bahan berisiko/dibatasi.
 - `produk_bahan_berbahaya`: relasi produk dengan bahan berisiko.

@@ -5,5 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^([^/]+)/?$ $1.php [L]
 
+RewriteRule ^produk/nugget-ayam-crispy/?$ nugget-ayam-crispy.php [L,QSA]
+
 # Route detail produk: /produk/1
 RewriteRule ^produk/([0-9]+)/?$ detail.php?id=$1 [L,QSA]

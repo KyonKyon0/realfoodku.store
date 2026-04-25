@@ -249,7 +249,7 @@ try {
                                 </div>
                             <?php endif; ?>
 
-                            <a href="/produk/<?= (int) $product['id']; ?>" class="btn">Lihat Detail</a>
+                            <a href="<?= $product['nama_produk'] === 'Nugget Ayam Crispy' ? '/produk/nugget-ayam-crispy' : '/produk/' . (int) $product['id']; ?>" class="btn">Lihat Detail</a>
                         </article>
                     <?php endforeach; ?>
                 </div>
