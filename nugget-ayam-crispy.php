@@ -6,15 +6,31 @@ require __DIR__ . '/db.php';
 
 $pdo = getConnection();
 
-$stmt = $pdo->prepare(
-    'SELECT p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.rating_grade,
-            p.harga_rentang_rupiah, kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g,
-            kg.takaran_saji
-     FROM produk p
-     INNER JOIN kandungan_gizi kg ON kg.produk_id = p.id
-     WHERE p.nama_produk = :nama
-     LIMIT 1'
-);
+$hasPriceRangeColumn = false;
+$columnCheck = $pdo->query("SHOW COLUMNS FROM produk LIKE 'harga_rentang_rupiah'");
+if ($columnCheck && $columnCheck->fetch()) {
+    $hasPriceRangeColumn = true;
+}
+
+$hargaSelect = $hasPriceRangeColumn
+    ? 'p.harga_rentang_rupiah'
+    : "'Rp39.000 - Rp57.000' AS harga_rentang_rupiah";
+
+$sql = "SELECT p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.rating_grade,
+" .
+       "       {$hargaSelect}, kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g,
+" .
+       "       kg.takaran_saji
+" .
+       "FROM produk p
+" .
+       "INNER JOIN kandungan_gizi kg ON kg.produk_id = p.id
+" .
+       "WHERE p.nama_produk = :nama
+" .
+       "LIMIT 1";
+
+$stmt = $pdo->prepare($sql);
 $stmt->execute([':nama' => 'Nugget Ayam Crispy']);
 $product = $stmt->fetch();
 
