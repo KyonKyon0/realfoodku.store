@@ -16,6 +16,7 @@ $stmt = $pdo->prepare(
         p.is_demo,
         p.deskripsi_singkat,
         p.image_url,
+        p.rating_grade,
         p.link_beli,
         kg.ingredient,
         kg.energi_kkal,
@@ -30,7 +31,7 @@ $stmt = $pdo->prepare(
      LEFT JOIN produk_hashtag ph ON ph.produk_id = p.id
      LEFT JOIN hashtag h ON h.id = ph.hashtag_id
      WHERE p.id = :id
-     GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.is_demo, p.deskripsi_singkat, p.image_url, p.link_beli,
+     GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.is_demo, p.deskripsi_singkat, p.image_url, p.rating_grade, p.link_beli,
               kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g, kg.takaran_saji'
 );
 $stmt->execute([':id' => $id]);
@@ -66,6 +67,13 @@ if ($product) {
         .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:bold; }
         .badge.demo { background:#fef3c7; color:#b45309; }
         .badge.live { background:#dcfce7; color:#166534; }
+        .rating { display:inline-block; margin-left:8px; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:bold; }
+        .grade-A{background:#22c55e;color:#fff;}
+        .grade-B{background:#65a30d;color:#fff;}
+        .grade-C{background:#eab308;color:#111827;}
+        .grade-D{background:#f97316;color:#fff;}
+        .grade-E{background:#ef4444;color:#fff;}
+        .grade-F{background:#7f1d1d;color:#fff;}
         .section { margin-top: 16px; }
         .product-image { width: 100%; max-height: 260px; object-fit: cover; border-radius: 10px; margin: 8px 0 14px; }
         .ingredient { background: #ecfeff; border-left: 4px solid #06b6d4; padding: 12px; border-radius: 8px; white-space: pre-line; }
@@ -95,6 +103,7 @@ if ($product) {
             <?php else: ?>
                 <span class="badge live">Live</span>
             <?php endif; ?>
+            <span class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></span>
             <img class="product-image" src="<?= htmlspecialchars($product['image_url'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
             <p><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
 

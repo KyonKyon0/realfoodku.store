@@ -5,16 +5,16 @@ Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita
 ## Fitur
 - URL tanpa `.php` (contoh: `/produk/1`).
 - Halaman depan (`index.php`) menampilkan **berita dummy** terlebih dahulu.
-- Berita di halaman depan memakai data dari tabel `berita` lengkap dengan gambar card (`image_url`), dan otomatis pakai dummy jika tabel kosong.
-- Produk yang ditampilkan di homepage fokus kategori **Makanan** dan **Minuman** (ditarik dari database) dan tiap produk memiliki gambar dummy (`image_url`).
+- Berita di halaman depan memakai data dari tabel `berita` lengkap dengan gambar card (`image_url`) dan link klik (`link_url`), dan otomatis pakai dummy jika tabel kosong.
+- Produk yang ditampilkan di homepage fokus kategori **Makanan** dan **Minuman** (ditarik dari database) dan tiap produk memiliki gambar dummy (`image_url`) + rating grade A-F berwarna.
 - Di PC, kartu produk tampil 3 item per viewport lalu bisa di-scroll horizontal untuk melihat sisanya.
 - Tiap produk memiliki hashtag kategori (contoh: `#sosis`, `#ayam`, `#energy-drink`).
 - Banner kuning paling atas untuk bahan berisiko menurut regulasi Eropa.
 - Footer hitam gelap dengan link dummy: Source, Github, Instagram, dll.
 
 ## Struktur database (harus sesuai SQL)
-- `produk`: data produk + merk + kategori + flag demo + `image_url` produk.
-- `berita`: berita dummy untuk halaman depan.
+- `produk`: data produk + merk + kategori + flag demo + `image_url` produk + `rating_grade` A-F.
+- `berita`: berita dummy untuk halaman depan + kolom `link_url` untuk klik card.
 - `kandungan_gizi`: ingredient + nilai gizi per produk.
 - `bahan_berbahaya_eropa`: master bahan berisiko/dibatasi.
 - `produk_bahan_berbahaya`: relasi produk dengan bahan berisiko.

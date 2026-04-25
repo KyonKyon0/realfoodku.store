@@ -86,6 +86,8 @@ body {
     padding: 12px;
     overflow: hidden;
 }
+.news-link { text-decoration: none; color: inherit; display: block; }
+.news-link:hover h3 { color: #0284c7; }
 .news-image {
     width: 100%;
     height: 150px;
@@ -153,6 +155,22 @@ body {
     font-weight: 700;
 }
 .product-card h4 { margin: 10px 0 6px; }
+
+.rating {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+.grade-A{background:#22c55e;color:#fff;}
+.grade-B{background:#65a30d;color:#fff;}
+.grade-C{background:#eab308;color:#111827;}
+.grade-D{background:#f97316;color:#fff;}
+.grade-E{background:#ef4444;color:#fff;}
+.grade-F{background:#7f1d1d;color:#fff;}
+
 .desc { margin: 0 0 8px; color: #334155; }
 .ingredient { margin: 0; font-size: .9rem; color: #1e293b; }
 .nutri {

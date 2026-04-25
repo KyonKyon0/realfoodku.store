@@ -21,6 +21,7 @@ $dummyNews = [
         'kategori' => 'Tips',
         'sumber' => 'Redaksi Dummy',
         'image_url' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80',
+        'link_url' => 'https://example.com/news/tips-memilih-produk-harian',
         'tanggal_publish' => '2026-04-01',
     ],
     [
@@ -29,6 +30,7 @@ $dummyNews = [
         'kategori' => 'Tren',
         'sumber' => 'Insight Dummy',
         'image_url' => 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=1200&q=80',
+        'link_url' => 'https://example.com/news/update-tren-minuman-2026',
         'tanggal_publish' => '2026-04-05',
     ],
     [
@@ -37,6 +39,7 @@ $dummyNews = [
         'kategori' => 'Edukasi',
         'sumber' => 'Pusat Dummy',
         'image_url' => 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80',
+        'link_url' => 'https://example.com/news/pahami-kode-aditif-pangan',
         'tanggal_publish' => '2026-04-10',
     ],
 ];
@@ -45,7 +48,7 @@ try {
     $pdo = getConnection();
 
     $newsStmt = $pdo->query(
-        'SELECT judul, ringkasan, kategori, sumber, image_url, tanggal_publish
+        'SELECT judul, ringkasan, kategori, sumber, image_url, link_url, tanggal_publish
          FROM berita
          ORDER BY tanggal_publish DESC, id DESC
          LIMIT 6'
@@ -63,6 +66,7 @@ try {
         p.kategori,
         p.deskripsi_singkat,
         p.image_url,
+        p.rating_grade,
         p.link_beli,
         kg.ingredient,
         kg.energi_kkal,
@@ -87,7 +91,7 @@ try {
           OR (kg.ingredient LIKE :keyword)
           OR (h.nama_tag LIKE :keyword)
       )
-    GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.link_beli,
+    GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.rating_grade, p.link_beli,
              kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g, kg.takaran_saji
     ORDER BY FIELD(p.kategori, 'Makanan', 'Minuman'), p.nama_produk ASC
     SQL;
@@ -192,11 +196,13 @@ try {
         <div class="news-grid carousel" data-carousel="news">
             <?php foreach ($newsList as $news): ?>
                 <article class="news-card">
-                    <img class="news-image" src="<?= htmlspecialchars($news['image_url'] ?? 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80', ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($news['judul'], ENT_QUOTES, 'UTF-8'); ?>">
-                    <span class="chip"><?= htmlspecialchars($news['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <a class="news-link" href="<?= htmlspecialchars($news['link_url'] ?? '#', ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">
+                        <img class="news-image" src="<?= htmlspecialchars($news['image_url'] ?? 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80', ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($news['judul'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <span class="chip"><?= htmlspecialchars($news['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
                     <h3><?= htmlspecialchars($news['judul'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     <p><?= htmlspecialchars($news['ringkasan'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <small><?= htmlspecialchars($news['sumber'], ENT_QUOTES, 'UTF-8'); ?> • <?= htmlspecialchars($news['tanggal_publish'], ENT_QUOTES, 'UTF-8'); ?></small>
+                    </a>
                 </article>
             <?php endforeach; ?>
         </div>
@@ -224,6 +230,7 @@ try {
                                 <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>
                             </div>
                             <h4><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h4>
+                            <div class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></div>
                             <p class="desc"><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
                             <p class="ingredient"><strong>Ingredient:</strong> <?= htmlspecialchars($product['ingredient'], ENT_QUOTES, 'UTF-8'); ?></p>
 
