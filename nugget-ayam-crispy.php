@@ -6,6 +6,10 @@ require __DIR__ . '/db.php';
 
 $pdo = getConnection();
 
+// Variabel sertifikasi (true/false)
+$isHalal = true;
+$isBpom = false;
+
 $hasPriceRangeColumn = false;
 $columnCheck = $pdo->query("SHOW COLUMNS FROM produk LIKE 'harga_rentang_rupiah'");
 if ($columnCheck && $columnCheck->fetch()) {
@@ -54,7 +58,13 @@ if ($product) {
     <style>
         body { font-family: Inter, Arial, sans-serif; margin:0; background:#eef6fb; color:#0f172a; }
         .wrap { max-width:900px; margin:0 auto; padding:24px; }
-        .panel { background:#fff; border-radius:14px; border:1px solid #dbe7f0; padding:18px; }
+        .panel { background:#fff; border-radius:14px; border:1px solid #dbe7f0; padding:20px; box-shadow:0 8px 25px rgba(15,23,42,.06);}
+        .top { display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; }
+        .certs { display:flex; gap:8px; }
+        .cert-logo { display:inline-flex; align-items:center; justify-content:center; min-width:74px; height:34px; border-radius:999px; font-size:12px; font-weight:800; border:1px solid transparent; }
+        .cert-logo.halal { background:#dcfce7; color:#166534; border-color:#86efac; }
+        .cert-logo.bpom { background:#dbeafe; color:#1d4ed8; border-color:#93c5fd; }
+        .section-card { margin-top:14px; background:#f8fbff; border:1px solid #dbe7f0; border-radius:10px; padding:12px; }
         .image { width:100%; max-height:360px; object-fit:cover; border-radius:12px; margin:12px 0; }
         .rating { display:inline-block; padding:4px 10px; border-radius:999px; font-size:13px; font-weight:700; }
         .grade-A{background:#22c55e;color:#fff;} .grade-B{background:#65a30d;color:#fff;} .grade-C{background:#eab308;color:#111827;}
@@ -75,22 +85,32 @@ if ($product) {
         <?php if (!$product): ?>
             <h1>Produk tidak ditemukan</h1>
         <?php else: ?>
-            <h1><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h1>
-            <div class="meta">Merk: <b><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></b></div>
-            <span class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></span>
+            <div class="top">
+                <div>
+                    <h1><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h1>
+                    <div class="meta">Merk: <b><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></b></div>
+                    <span class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
+                <div class="certs">
+                    <?php if ($isHalal): ?><span class="cert-logo halal">HALAL</span><?php endif; ?>
+                    <?php if ($isBpom): ?><span class="cert-logo bpom">BPOM</span><?php endif; ?>
+                </div>
+            </div>
             <img class="image" src="<?= htmlspecialchars($product['image_url'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
-            <p><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
-            <p><b>Daftar bahan:</b> <?= htmlspecialchars($product['ingredient'], ENT_QUOTES, 'UTF-8'); ?></p>
-            <p><b>Range harga:</b> <?= htmlspecialchars($product['harga_rentang_rupiah'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <div class="section-card">
+                <p><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p><b>Daftar bahan:</b> <?= htmlspecialchars($product['ingredient'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p><b>Range harga:</b> <?= htmlspecialchars($product['harga_rentang_rupiah'], ENT_QUOTES, 'UTF-8'); ?></p>
+            </div>
 
-            <div class="nutri">
+            <div class="section-card"><h3 style="margin:0 0 8px;">Informasi Gizi</h3><div class="nutri">
                 <div>Takaran: <?= htmlspecialchars($product['takaran_saji'], ENT_QUOTES, 'UTF-8'); ?></div>
                 <div>Kalori: <?= number_format((float) $product['energi_kkal'], 0); ?> kkal</div>
                 <div>Gula: <?= number_format((float) $product['gula_g'], 1); ?> g</div>
                 <div>Garam: <?= number_format((float) $product['garam_mg'], 0); ?> mg</div>
                 <div>Lemak: <?= number_format((float) $product['lemak_g'], 1); ?> g</div>
                 <div>Protein: <?= number_format((float) $product['protein_g'], 1); ?> g</div>
-            </div>
+            </div></div>
 
             <button class="buy-btn" id="buyBtn">Beli Sekarang</button>
             <div class="stores" id="storeList">

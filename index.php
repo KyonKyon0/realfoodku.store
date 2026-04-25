@@ -230,10 +230,11 @@ try {
                                 'Energy Drink Max' => 'https://images.unsplash.com/photo-1589918947397-4f4111b7f6a4?w=1200&q=80',
                             ];
                             $productFallbackImage = $product['kategori'] === 'Minuman'
-                                ? ($drinkImageByName[$product['nama_produk']] ?? 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=1200&q=80')
+                                ? ($drinkImageByName[$product['nama_produk']] ?? 'https://via.placeholder.com/800x500/0ea5e9/ffffff?text=Minuman+Dummy')
                                 : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80';
+                            $productImageSrc = $product['image_url'] ?: $productFallbackImage;
                             ?>
-                            <img class="product-image" src="<?= htmlspecialchars($product['image_url'] ?: $productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <img class="product-image" src="<?= htmlspecialchars($productImageSrc, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>';" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
                             <div class="meta-row">
                                 <span class="chip"><?= htmlspecialchars($product['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
                                 <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>
