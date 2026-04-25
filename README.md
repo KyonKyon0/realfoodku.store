@@ -27,7 +27,8 @@ Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita
 - `.htaccess` : rewrite URL tanpa `.php`.
 - `index.php` : halaman depan berita + kategori + search + produk.
 - `detail.php` : detail ingredient, gizi, hashtag, bahan berisiko.
-- `assets/css/index.css` : style halaman utama + footer gelap.
+- `assets/css/index.css` : style versi lama.
+- `assets/css/index_2.css` : style terbaru halaman utama (dipakai saat ini).
 - `assets/js/index.js` : interaksi UI ringan.
 - `database.sql` : schema + data awal.
 - `config.php` : konfigurasi DB.
@@ -57,3 +58,7 @@ Jika password berubah, update `db_pass` pada `config.php`.
 ## Fallback path tanpa rewrite
 Jika server tidak membaca `.htaccess`, halaman Nugget tetap bisa diakses melalui path fisik:
 - `/produk/nugget-ayam-crispy/` (file: `produk/nugget-ayam-crispy/index.php`)
+
+
+## Catatan versi CSS
+Setiap update CSS utama, file dibuat versi baru (contoh: `index_2.css`) agar cache browser tidak bentrok.

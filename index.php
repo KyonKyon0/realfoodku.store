@@ -145,7 +145,7 @@ try {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/index.css?v=<?= urlencode((string) filemtime(__DIR__ . '/assets/css/index.css')); ?>">
+    <link rel="stylesheet" href="/assets/css/index_2.css?v=<?= urlencode((string) filemtime(__DIR__ . '/assets/css/index_2.css')); ?>">
 </head>
 <body>
 <header class="topbar">
@@ -226,11 +226,11 @@ try {
                         <article class="product-card">
                             <?php
                             $drinkImageByName = [
-                                'Soda Jeruk X' => 'https://images.unsplash.com/photo-1543253539-0b8d2f82b1a6?w=1200&q=80',
-                                'Energy Drink Max' => 'https://images.unsplash.com/photo-1589918947397-4f4111b7f6a4?w=1200&q=80',
+                                'Soda Jeruk X' => '/assets/img/drink_soda.svg',
+                                'Energy Drink Max' => '/assets/img/drink_energy.svg',
                             ];
                             $productFallbackImage = $product['kategori'] === 'Minuman'
-                                ? ($drinkImageByName[$product['nama_produk']] ?? 'https://via.placeholder.com/800x500/0ea5e9/ffffff?text=Minuman+Dummy')
+                                ? ($drinkImageByName[$product['nama_produk']] ?? '/assets/img/drink_default.svg')
                                 : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80';
                             $productImageSrc = $product['image_url'] ?: $productFallbackImage;
                             ?>

@@ -8,7 +8,9 @@ $pdo = getConnection();
 
 // Variabel sertifikasi (true/false)
 $isHalal = true;
-$isBpom = false;
+$isBpom = true;
+$halalHref = "https://example.com/sertifikat-halal-nugget";
+$bpomHref = "https://example.com/sertifikat-bpom-nugget";
 
 $hasPriceRangeColumn = false;
 $columnCheck = $pdo->query("SHOW COLUMNS FROM produk LIKE 'harga_rentang_rupiah'");
@@ -56,14 +58,15 @@ if ($product) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nugget Ayam Crispy - Detail</title>
     <style>
-        body { font-family: Inter, Arial, sans-serif; margin:0; background:#eef6fb; color:#0f172a; }
+        body { font-family: Inter, Arial, sans-serif; margin:0; background:linear-gradient(180deg,#eff8ff,#e7f0f8); color:#0f172a; }
         .wrap { max-width:900px; margin:0 auto; padding:24px; }
-        .panel { background:#fff; border-radius:14px; border:1px solid #dbe7f0; padding:20px; box-shadow:0 8px 25px rgba(15,23,42,.06);}
+        .panel { background:#fff; border-radius:18px; border:1px solid #dbe7f0; padding:22px; box-shadow:0 12px 30px rgba(15,23,42,.08); }
         .top { display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; }
         .certs { display:flex; gap:8px; }
-        .cert-logo { display:inline-flex; align-items:center; justify-content:center; min-width:74px; height:34px; border-radius:999px; font-size:12px; font-weight:800; border:1px solid transparent; }
+        .cert-logo { display:inline-flex; align-items:center; justify-content:center; min-width:94px; height:36px; border-radius:999px; font-size:12px; font-weight:800; border:1px solid transparent; text-decoration:none; }
         .cert-logo.halal { background:#dcfce7; color:#166534; border-color:#86efac; }
         .cert-logo.bpom { background:#dbeafe; color:#1d4ed8; border-color:#93c5fd; }
+        .cert-logo:hover { transform: translateY(-1px); }
         .section-card { margin-top:14px; background:#f8fbff; border:1px solid #dbe7f0; border-radius:10px; padding:12px; }
         .image { width:100%; max-height:360px; object-fit:cover; border-radius:12px; margin:12px 0; }
         .rating { display:inline-block; padding:4px 10px; border-radius:999px; font-size:13px; font-weight:700; }
@@ -71,7 +74,7 @@ if ($product) {
         .grade-D{background:#f97316;color:#fff;} .grade-E{background:#ef4444;color:#fff;} .grade-F{background:#7f1d1d;color:#fff;}
         .meta { color:#475569; margin:6px 0; }
         .nutri { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; background:#f8fbff; border:1px solid #dbe7f0; border-radius:10px; padding:10px; }
-        .buy-btn { margin-top:14px; border:none; background:#0284c7; color:#fff; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:700; }
+        .buy-btn { margin-top:14px; border:none; background:#0284c7; color:#fff; padding:11px 16px; border-radius:10px; cursor:pointer; font-weight:700; box-shadow:0 8px 20px rgba(2,132,199,.25); }
         .stores { margin-top:12px; display:none; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
         .stores.show { display:grid; }
         .store { display:flex; align-items:center; gap:8px; border:1px solid #cbd5e1; border-radius:10px; padding:8px; text-decoration:none; color:#0f172a; background:#fff; }
@@ -92,8 +95,8 @@ if ($product) {
                     <span class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></span>
                 </div>
                 <div class="certs">
-                    <?php if ($isHalal): ?><span class="cert-logo halal">HALAL</span><?php endif; ?>
-                    <?php if ($isBpom): ?><span class="cert-logo bpom">BPOM</span><?php endif; ?>
+                    <?php if ($isHalal): ?><a class="cert-logo halal" href="<?= htmlspecialchars($halalHref, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">LOGO HALAL</a><?php endif; ?>
+                    <?php if ($isBpom): ?><a class="cert-logo bpom" href="<?= htmlspecialchars($bpomHref, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">LOGO BPOM</a><?php endif; ?>
                 </div>
             </div>
             <img class="image" src="<?= htmlspecialchars($product['image_url'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
