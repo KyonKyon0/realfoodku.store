@@ -16,6 +16,7 @@ CREATE TABLE produk (
     kategori ENUM('Makanan', 'Minuman', 'Kosmetik') NOT NULL,
     is_demo TINYINT(1) NOT NULL DEFAULT 0,
     deskripsi_singkat TEXT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
     link_beli VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -80,12 +81,12 @@ INSERT INTO berita (judul, ringkasan, kategori, sumber, image_url, tanggal_publi
 ('Waspada Gula Tersembunyi', 'Produk minuman kemasan sering punya gula tambahan lebih dari rekomendasi harian.', 'Kesehatan', 'Tim Nutrisi Dummy', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80', '2026-01-15'),
 ('Cara Cek Bahan Berisiko', 'Pelajari kode aditif seperti E110, E129, dan E250 sebelum checkout.', 'Tips', 'Pusat Info Dummy', 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=1200&q=80', '2026-02-02');
 
-INSERT INTO produk (nama_produk, merk, kategori, is_demo, deskripsi_singkat, link_beli) VALUES
-('Sosis Siap Saji Y', 'Merk B', 'Makanan', 0, 'Sosis instan untuk camilan cepat.', 'https://example.com/beli/sosis-y'),
-('Nugget Ayam Crispy', 'Merk D', 'Makanan', 0, 'Nugget ayam beku dengan tekstur renyah.', 'https://example.com/beli/nugget-ayam'),
-('Soda Jeruk X', 'Merk A', 'Minuman', 0, 'Minuman berkarbonasi rasa jeruk.', 'https://example.com/beli/soda-jeruk-x'),
-('Energy Drink Max', 'Merk E', 'Minuman', 0, 'Minuman energi dengan kafein dan taurin.', 'https://example.com/beli/energy-max'),
-('Glow Serum C', 'Merk Kos A', 'Kosmetik', 1, 'Serum pencerah wajah (data demo).', 'https://example.com/beli/glow-serum-c');
+INSERT INTO produk (nama_produk, merk, kategori, is_demo, deskripsi_singkat, image_url, link_beli) VALUES
+('Sosis Siap Saji Y', 'Merk B', 'Makanan', 0, 'Sosis instan untuk camilan cepat.', 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80', 'https://example.com/beli/sosis-y'),
+('Nugget Ayam Crispy', 'Merk D', 'Makanan', 0, 'Nugget ayam beku dengan tekstur renyah.', 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=1200&q=80', 'https://example.com/beli/nugget-ayam'),
+('Soda Jeruk X', 'Merk A', 'Minuman', 0, 'Minuman berkarbonasi rasa jeruk.', 'https://images.unsplash.com/photo-1543253539-0b8d2f82b1a6?w=1200&q=80', 'https://example.com/beli/soda-jeruk-x'),
+('Energy Drink Max', 'Merk E', 'Minuman', 0, 'Minuman energi dengan kafein dan taurin.', 'https://images.unsplash.com/photo-1589918947397-4f4111b7f6a4?w=1200&q=80', 'https://example.com/beli/energy-max'),
+('Glow Serum C', 'Merk Kos A', 'Kosmetik', 1, 'Serum pencerah wajah (data demo).', 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&q=80', 'https://example.com/beli/glow-serum-c');
 
 INSERT INTO kandungan_gizi (produk_id, ingredient, energi_kkal, gula_g, garam_mg, lemak_g, protein_g, takaran_saji) VALUES
 (1, 'Daging ayam, pati tapioka, garam, penguat rasa, sodium nitrite (E250)', 190, 2, 760, 13, 9, '75 g'),

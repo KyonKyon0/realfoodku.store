@@ -12,6 +12,7 @@ $productsByCategory = [
 ];
 $dangerousByEurope = [];
 $errorMessage = '';
+$featuredFoodLink = '#produk';
 
 $dummyNews = [
     [
@@ -61,6 +62,7 @@ try {
         p.merk,
         p.kategori,
         p.deskripsi_singkat,
+        p.image_url,
         p.link_beli,
         kg.ingredient,
         kg.energi_kkal,
@@ -85,7 +87,7 @@ try {
           OR (kg.ingredient LIKE :keyword)
           OR (h.nama_tag LIKE :keyword)
       )
-    GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.link_beli,
+    GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.link_beli,
              kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g, kg.takaran_saji
     ORDER BY FIELD(p.kategori, 'Makanan', 'Minuman'), p.nama_produk ASC
     SQL;
@@ -119,6 +121,11 @@ try {
         $product['hashtags'] = array_values(array_filter(explode(',', (string) $product['hashtags'])));
         $product['danger_details'] = $dangerDetails;
         $productsByCategory[$product['kategori']][] = $product;
+    }
+
+
+    if (!empty($productsByCategory['Makanan'][0]['id'])) {
+        $featuredFoodLink = '/produk/' . (int) $productsByCategory['Makanan'][0]['id'];
     }
 } catch (Throwable $e) {
     $errorMessage = 'Koneksi database gagal. Cek config.php dan import database.sql.';
@@ -167,6 +174,9 @@ try {
         <input type="text" name="q" id="searchInput" placeholder="Cari produk, merk, hashtag..." value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
         <button id="searchBtn" type="submit">Cari</button>
     </form>
+    <div class="hero-actions">
+        <a class="hero-link" href="<?= htmlspecialchars($featuredFoodLink, ENT_QUOTES, 'UTF-8'); ?>">Lihat Produk Makanan</a>
+    </div>
 </section>
 
 <main class="shell">
@@ -208,6 +218,7 @@ try {
                 <div class="product-grid carousel" data-carousel="<?= htmlspecialchars($carouselKey, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php foreach ($productsByCategory[$category] as $product): ?>
                         <article class="product-card">
+                            <img class="product-image" src="<?= htmlspecialchars($product['image_url'] ?? 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80', ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
                             <div class="meta-row">
                                 <span class="chip"><?= htmlspecialchars($product['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
                                 <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>

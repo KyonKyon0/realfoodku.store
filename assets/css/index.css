@@ -29,7 +29,7 @@ body {
     background: linear-gradient(180deg, #e8f3fb 0%, var(--bg) 100%);
 }
 
-.shell { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+.shell { max-width: min(96vw, 1500px); margin: 0 auto; padding: 0 22px; }
 .topbar {
     position: sticky;
     top: 0;
@@ -49,6 +49,8 @@ body {
 .risk-list span { background: rgba(255,255,255,.7); border-radius: 999px; padding: 4px 10px; font-size: .82rem; }
 
 .hero { text-align: center; padding-top: 40px; padding-bottom: 20px; }
+.hero-actions { margin-top: 12px; }
+.hero-link { display: inline-block; background: #0ea5e9; color: #fff; text-decoration: none; font-weight: 700; padding: 10px 16px; border-radius: 10px; }
 .hero h1 { margin: 0; font-size: clamp(1.8rem, 5vw, 3rem); }
 .hero p { color: var(--muted); margin: 12px auto 0; max-width: 760px; }
 .search {
@@ -133,6 +135,13 @@ body {
     min-width: calc((100% - 24px) / 3);
     scroll-snap-align: start;
 }
+.product-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 .meta-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .brand-name { font-size: .84rem; color: var(--muted); }
 .chip {
@@ -190,6 +199,7 @@ body {
 .footer-dark a:hover { color: #38bdf8; }
 
 @media (max-width: 760px) {
+    .shell { padding: 0 16px; }
     .nav nav { display: none; }
     .search { flex-direction: column; }
     .search button { height: 42px; }

@@ -15,6 +15,7 @@ $stmt = $pdo->prepare(
         p.kategori,
         p.is_demo,
         p.deskripsi_singkat,
+        p.image_url,
         p.link_beli,
         kg.ingredient,
         kg.energi_kkal,
@@ -29,7 +30,7 @@ $stmt = $pdo->prepare(
      LEFT JOIN produk_hashtag ph ON ph.produk_id = p.id
      LEFT JOIN hashtag h ON h.id = ph.hashtag_id
      WHERE p.id = :id
-     GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.is_demo, p.deskripsi_singkat, p.link_beli,
+     GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.is_demo, p.deskripsi_singkat, p.image_url, p.link_beli,
               kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g, kg.takaran_saji'
 );
 $stmt->execute([':id' => $id]);
@@ -66,6 +67,7 @@ if ($product) {
         .badge.demo { background:#fef3c7; color:#b45309; }
         .badge.live { background:#dcfce7; color:#166534; }
         .section { margin-top: 16px; }
+        .product-image { width: 100%; max-height: 260px; object-fit: cover; border-radius: 10px; margin: 8px 0 14px; }
         .ingredient { background: #ecfeff; border-left: 4px solid #06b6d4; padding: 12px; border-radius: 8px; white-space: pre-line; }
         .nutrition { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .hashtags { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
@@ -93,6 +95,7 @@ if ($product) {
             <?php else: ?>
                 <span class="badge live">Live</span>
             <?php endif; ?>
+            <img class="product-image" src="<?= htmlspecialchars($product['image_url'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
             <p><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
 
             <?php if (!empty($product['hashtags'])): ?>
