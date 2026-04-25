@@ -5,8 +5,9 @@ Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita
 ## Fitur
 - URL tanpa `.php` (contoh: `/produk/1`).
 - Halaman depan (`index.php`) menampilkan **berita dummy** terlebih dahulu.
-- Berita di halaman depan memakai data dari tabel `berita`, dan otomatis pakai dummy jika tabel kosong.
+- Berita di halaman depan memakai data dari tabel `berita` lengkap dengan gambar card (`image_url`), dan otomatis pakai dummy jika tabel kosong.
 - Produk yang ditampilkan di homepage fokus kategori **Makanan** dan **Minuman** (ditarik dari database).
+- Di PC, kartu produk tampil 3 item per viewport lalu bisa di-scroll horizontal untuk melihat sisanya.
 - Tiap produk memiliki hashtag kategori (contoh: `#sosis`, `#ayam`, `#energy-drink`).
 - Banner kuning paling atas untuk bahan berisiko menurut regulasi Eropa.
 - Footer hitam gelap dengan link dummy: Source, Github, Instagram, dll.

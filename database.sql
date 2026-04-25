@@ -26,6 +26,7 @@ CREATE TABLE berita (
     ringkasan TEXT NOT NULL,
     kategori VARCHAR(60) NOT NULL,
     sumber VARCHAR(120) NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
     tanggal_publish DATE NOT NULL
 ) ENGINE=InnoDB;
 
@@ -74,10 +75,10 @@ CREATE TABLE produk_hashtag (
     UNIQUE KEY uniq_produk_tag (produk_id, hashtag_id)
 ) ENGINE=InnoDB;
 
-INSERT INTO berita (judul, ringkasan, kategori, sumber, tanggal_publish) VALUES
-('Tren Label Pangan 2026', 'Banyak konsumen mulai membaca label ingredient sebelum membeli produk.', 'Edukasi', 'Tim RealFoodKu', '2026-01-10'),
-('Waspada Gula Tersembunyi', 'Produk minuman kemasan sering punya gula tambahan lebih dari rekomendasi harian.', 'Kesehatan', 'Tim Nutrisi Dummy', '2026-01-15'),
-('Cara Cek Bahan Berisiko', 'Pelajari kode aditif seperti E110, E129, dan E250 sebelum checkout.', 'Tips', 'Pusat Info Dummy', '2026-02-02');
+INSERT INTO berita (judul, ringkasan, kategori, sumber, image_url, tanggal_publish) VALUES
+('Tren Label Pangan 2026', 'Banyak konsumen mulai membaca label ingredient sebelum membeli produk.', 'Edukasi', 'Tim RealFoodKu', 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80', '2026-01-10'),
+('Waspada Gula Tersembunyi', 'Produk minuman kemasan sering punya gula tambahan lebih dari rekomendasi harian.', 'Kesehatan', 'Tim Nutrisi Dummy', 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80', '2026-01-15'),
+('Cara Cek Bahan Berisiko', 'Pelajari kode aditif seperti E110, E129, dan E250 sebelum checkout.', 'Tips', 'Pusat Info Dummy', 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=1200&q=80', '2026-02-02');
 
 INSERT INTO produk (nama_produk, merk, kategori, is_demo, deskripsi_singkat, link_beli) VALUES
 ('Sosis Siap Saji Y', 'Merk B', 'Makanan', 0, 'Sosis instan untuk camilan cepat.', 'https://example.com/beli/sosis-y'),

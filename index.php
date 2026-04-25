@@ -19,6 +19,7 @@ $dummyNews = [
         'ringkasan' => 'Mulai cek ingredient, gula, garam, dan lemak sebelum belanja produk kemasan.',
         'kategori' => 'Tips',
         'sumber' => 'Redaksi Dummy',
+        'image_url' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80',
         'tanggal_publish' => '2026-04-01',
     ],
     [
@@ -26,6 +27,7 @@ $dummyNews = [
         'ringkasan' => 'Minuman rendah gula dan produk isotonik masih jadi pilihan utama konsumen.',
         'kategori' => 'Tren',
         'sumber' => 'Insight Dummy',
+        'image_url' => 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=1200&q=80',
         'tanggal_publish' => '2026-04-05',
     ],
     [
@@ -33,6 +35,7 @@ $dummyNews = [
         'ringkasan' => 'Kode seperti E110, E129, dan E250 perlu dipahami agar konsumsi lebih bijak.',
         'kategori' => 'Edukasi',
         'sumber' => 'Pusat Dummy',
+        'image_url' => 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80',
         'tanggal_publish' => '2026-04-10',
     ],
 ];
@@ -41,7 +44,7 @@ try {
     $pdo = getConnection();
 
     $newsStmt = $pdo->query(
-        'SELECT judul, ringkasan, kategori, sumber, tanggal_publish
+        'SELECT judul, ringkasan, kategori, sumber, image_url, tanggal_publish
          FROM berita
          ORDER BY tanggal_publish DESC, id DESC
          LIMIT 6'
@@ -179,6 +182,7 @@ try {
         <div class="news-grid carousel" data-carousel="news">
             <?php foreach ($newsList as $news): ?>
                 <article class="news-card">
+                    <img class="news-image" src="<?= htmlspecialchars($news['image_url'] ?? 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80', ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($news['judul'], ENT_QUOTES, 'UTF-8'); ?>">
                     <span class="chip"><?= htmlspecialchars($news['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
                     <h3><?= htmlspecialchars($news['judul'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     <p><?= htmlspecialchars($news['ringkasan'], ENT_QUOTES, 'UTF-8'); ?></p>
