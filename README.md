@@ -28,7 +28,8 @@ Website PHP + MySQL bertema data makanan dan minuman dengan halaman depan berita
 - `index.php` : halaman depan berita + kategori + search + produk.
 - `detail.php` : detail ingredient, gizi, hashtag, bahan berisiko.
 - `assets/css/index.css` : style versi lama.
-- `assets/css/index_2.css` : style terbaru halaman utama (dipakai saat ini).
+- `assets/css/index_2.css` : style versi sebelumnya.
+- `assets/css/index_3.css` : style desktop/mobile terbaru halaman utama (dipakai saat ini).
 - `assets/js/index.js` : interaksi UI ringan.
 - `database.sql` : schema + data awal.
 - `config.php` : konfigurasi DB.
@@ -61,4 +62,4 @@ Jika server tidak membaca `.htaccess`, halaman Nugget tetap bisa diakses melalui
 
 
 ## Catatan versi CSS
-Setiap update CSS utama, file dibuat versi baru (contoh: `index_2.css`) agar cache browser tidak bentrok.
+Setiap update CSS utama, file dibuat versi baru (contoh: `index_2.css`, `index_3.css`) agar cache browser tidak bentrok.
