@@ -7,17 +7,25 @@ require __DIR__ . '/db.php';
 $search = trim((string) ($_GET['q'] ?? ''));
 $newsList = [];
 $productsByCategory = [
-    'Makanan' => [],
-    'Minuman' => [],
+    'Makanan' => [
+        'Nugget' => [],
+        'Sosis' => [],
+        'Bakso' => [],
+    ],
+    'Minuman' => [
+        'Soda' => [],
+        'Energy Drink' => [],
+        'Susu' => [],
+    ],
 ];
 $dangerousByEurope = [];
 $errorMessage = '';
-$featuredFoodLink = '#produk';
+$featuredFoodLink = '/produk/nugget-ayam-crispy';
 
 $dummyNews = [
     [
-        'judul' => 'Tips Memilih Produk Harian',
-        'ringkasan' => 'Mulai cek ingredient, gula, garam, dan lemak sebelum belanja produk kemasan.',
+        'judul' => 'Tips Belanja Produk Kemasan',
+        'ringkasan' => 'Cek gula, garam, dan komposisi utama sebelum memilih produk harian.',
         'kategori' => 'Tips',
         'sumber' => 'Redaksi Dummy',
         'image_url' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80',
@@ -25,24 +33,41 @@ $dummyNews = [
         'tanggal_publish' => '2026-04-01',
     ],
     [
-        'judul' => 'Update Tren Minuman 2026',
-        'ringkasan' => 'Minuman rendah gula dan produk isotonik masih jadi pilihan utama konsumen.',
+        'judul' => 'Tren Minuman Harian 2026',
+        'ringkasan' => 'Produk minuman rendah gula dan tinggi kalsium semakin populer.',
         'kategori' => 'Tren',
         'sumber' => 'Insight Dummy',
         'image_url' => 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=1200&q=80',
         'link_url' => 'https://example.com/news/update-tren-minuman-2026',
         'tanggal_publish' => '2026-04-05',
     ],
-    [
-        'judul' => 'Pahami Kode Aditif Pangan',
-        'ringkasan' => 'Kode seperti E110, E129, dan E250 perlu dipahami agar konsumsi lebih bijak.',
-        'kategori' => 'Edukasi',
-        'sumber' => 'Pusat Dummy',
-        'image_url' => 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80',
-        'link_url' => 'https://example.com/news/pahami-kode-aditif-pangan',
-        'tanggal_publish' => '2026-04-10',
-    ],
 ];
+
+$resolveSegment = static function (array $product): string {
+    $name = strtolower((string) ($product['nama_produk'] ?? ''));
+    $ingredient = strtolower((string) ($product['ingredient'] ?? ''));
+    $hashtags = strtolower((string) ($product['hashtags'] ?? ''));
+
+    if (($product['kategori'] ?? '') === 'Makanan') {
+        if (str_contains($name, 'sosis') || str_contains($hashtags, 'sosis')) {
+            return 'Sosis';
+        }
+        if (str_contains($name, 'bakso') || str_contains($hashtags, 'sapi')) {
+            return 'Bakso';
+        }
+
+        return 'Nugget';
+    }
+
+    if (str_contains($name, 'energy') || str_contains($ingredient, 'kafein')) {
+        return 'Energy Drink';
+    }
+    if (str_contains($name, 'soda') || str_contains($name, 'jeruk') || str_contains($ingredient, 'berkarbonasi')) {
+        return 'Soda';
+    }
+
+    return 'Susu';
+};
 
 try {
     $pdo = getConnection();
@@ -66,15 +91,8 @@ try {
         p.kategori,
         p.deskripsi_singkat,
         p.image_url,
-        p.rating_grade,
         p.link_beli,
         kg.ingredient,
-        kg.energi_kkal,
-        kg.gula_g,
-        kg.garam_mg,
-        kg.lemak_g,
-        kg.protein_g,
-        kg.takaran_saji,
         GROUP_CONCAT(DISTINCT h.nama_tag ORDER BY h.nama_tag SEPARATOR ',') AS hashtags,
         GROUP_CONCAT(DISTINCT CONCAT(bbe.nama_bahan, '::', bbe.status_eropa, '::', bbe.alasan) SEPARATOR '||') AS detail_bahan_berbahaya
     FROM produk p
@@ -91,8 +109,8 @@ try {
           OR (kg.ingredient LIKE :keyword)
           OR (h.nama_tag LIKE :keyword)
       )
-    GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.rating_grade, p.link_beli,
-             kg.ingredient, kg.energi_kkal, kg.gula_g, kg.garam_mg, kg.lemak_g, kg.protein_g, kg.takaran_saji
+    GROUP BY p.id, p.nama_produk, p.merk, p.kategori, p.deskripsi_singkat, p.image_url, p.link_beli,
+             kg.ingredient
     ORDER BY FIELD(p.kategori, 'Makanan', 'Minuman'), p.nama_produk ASC
     SQL;
 
@@ -104,32 +122,24 @@ try {
 
     foreach ($stmt->fetchAll() as $product) {
         $dangerDetailsRaw = array_filter(explode('||', (string) $product['detail_bahan_berbahaya']));
-        $dangerDetails = [];
 
         foreach ($dangerDetailsRaw as $item) {
             [$nama, $status, $alasan] = array_pad(explode('::', $item, 3), 3, '');
-            if ($nama === '') {
-                continue;
+            if ($nama !== '') {
+                $dangerousByEurope[$nama] = [
+                    'status' => $status,
+                    'alasan' => $alasan,
+                ];
             }
-            $dangerDetails[] = [
-                'nama' => $nama,
-                'status' => $status,
-                'alasan' => $alasan,
-            ];
-            $dangerousByEurope[$nama] = [
-                'status' => $status,
-                'alasan' => $alasan,
-            ];
         }
 
+        $segment = $resolveSegment($product);
+        $product['segment'] = $segment;
         $product['hashtags'] = array_values(array_filter(explode(',', (string) $product['hashtags'])));
-        $product['danger_details'] = $dangerDetails;
-        $productsByCategory[$product['kategori']][] = $product;
-    }
 
-
-    if (!empty($productsByCategory['Makanan'][0]['id'])) {
-        $featuredFoodLink = '/produk/' . (int) $productsByCategory['Makanan'][0]['id'];
+        if (isset($productsByCategory[$product['kategori']][$segment])) {
+            $productsByCategory[$product['kategori']][$segment][] = $product;
+        }
     }
 } catch (Throwable $e) {
     $errorMessage = 'Koneksi database gagal. Cek config.php dan import database.sql.';
@@ -172,14 +182,14 @@ try {
 <?php endif; ?>
 
 <section class="hero shell">
-    <h1>Data Makanan & Minuman Lebih Jelas</h1>
-    <p>Cari produk, lihat ingredient, gizi, dan informasi bahan berisiko dalam satu tempat.</p>
+    <h1>Katalog Gaya Marketplace Produk Harian</h1>
+    <p>Tampilan depan fokus ke merk dan kategori. Detail gizi lengkap tersedia saat produk dibuka.</p>
     <form method="get" action="/" class="search">
         <input type="text" name="q" id="searchInput" placeholder="Cari produk, merk, hashtag..." value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
         <button id="searchBtn" type="submit">Cari</button>
     </form>
     <div class="hero-actions">
-        <a class="hero-link" href="<?= htmlspecialchars($featuredFoodLink, ENT_QUOTES, 'UTF-8'); ?>">Lihat Produk Makanan</a>
+        <a class="hero-link" href="<?= htmlspecialchars($featuredFoodLink, ENT_QUOTES, 'UTF-8'); ?>">Lihat Kumpulan Produk Nugget</a>
     </div>
 </section>
 
@@ -211,19 +221,20 @@ try {
 
     <section id="produk" class="block">
         <div class="head">
-            <h2>Produk dari Database</h2>
-            <p>Kategori makanan dan minuman ditarik langsung dari database.</p>
+            <h2>Kategori Produk</h2>
+            <p>Masing-masing kategori dibagi menjadi 3 grup produk agar mirip katalog marketplace.</p>
         </div>
 
-        <?php foreach (['Makanan', 'Minuman'] as $category): ?>
-            <?php $carouselKey = strtolower($category); ?>
+        <?php foreach ($productsByCategory as $category => $segments): ?>
             <h3 class="category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?></h3>
-            <?php if (empty($productsByCategory[$category])): ?>
-                <div class="alert">Tidak ada data <?= strtolower($category); ?> yang cocok.</div>
-            <?php else: ?>
-                <div class="product-grid carousel" data-carousel="<?= htmlspecialchars($carouselKey, ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php foreach ($productsByCategory[$category] as $product): ?>
-                        <article class="product-card">
+
+            <?php foreach ($segments as $segment => $segmentProducts): ?>
+                <h4 class="segment-title"><?= htmlspecialchars($segment, ENT_QUOTES, 'UTF-8'); ?></h4>
+                <?php if (empty($segmentProducts)): ?>
+                    <div class="alert">Belum ada produk untuk grup <?= strtolower($segment); ?>.</div>
+                <?php else: ?>
+                    <div class="product-grid carousel" data-carousel="<?= htmlspecialchars(strtolower($category . '-' . $segment), ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php foreach ($segmentProducts as $product): ?>
                             <?php
                             $drinkImageByName = [
                                 'Soda Jeruk X' => '/assets/img/drink_soda.svg',
@@ -233,38 +244,34 @@ try {
                                 ? ($drinkImageByName[$product['nama_produk']] ?? '/assets/img/drink_default.svg')
                                 : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80';
                             $productImageSrc = $product['image_url'] ?: $productFallbackImage;
+                            $detailUrl = $product['nama_produk'] === 'Nugget Ayam Crispy'
+                                ? '/produk/nugget-ayam-crispy'
+                                : '/produk/' . (int) $product['id'];
                             ?>
-                            <img class="product-image" src="<?= htmlspecialchars($productImageSrc, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>';" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <div class="meta-row">
-                                <span class="chip"><?= htmlspecialchars($product['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
-                                <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>
-                            </div>
-                            <h4><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h4>
-                            <div class="rating grade-<?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?>">Rating <?= htmlspecialchars(strtoupper($product['rating_grade']), ENT_QUOTES, 'UTF-8'); ?></div>
-                            <p class="desc"><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p class="ingredient"><strong>Ingredient:</strong> <?= htmlspecialchars($product['ingredient'], ENT_QUOTES, 'UTF-8'); ?></p>
-
-                            <div class="nutri">
-                                <span>Takaran: <?= htmlspecialchars($product['takaran_saji'], ENT_QUOTES, 'UTF-8'); ?></span>
-                                <span>Energi: <?= number_format((float) $product['energi_kkal'], 0); ?> kkal</span>
-                                <span>Gula: <?= number_format((float) $product['gula_g'], 1); ?> g</span>
-                                <span>Garam: <?= number_format((float) $product['garam_mg'], 0); ?> mg</span>
-                            </div>
-
-                            <?php if (!empty($product['hashtags'])): ?>
-                                <div class="tags">
-                                    <?php foreach ($product['hashtags'] as $tag): ?>
-                                        <span>#<?= htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?></span>
-                                    <?php endforeach; ?>
+                            <article class="product-card">
+                                <img class="product-image" src="<?= htmlspecialchars($productImageSrc, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>';" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <div class="meta-row">
+                                    <span class="chip"><?= htmlspecialchars($product['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>
                                 </div>
-                            <?php endif; ?>
+                                <h4><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h4>
+                                <p class="desc"><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                            <a href="<?= $product['nama_produk'] === 'Nugget Ayam Crispy' ? '/produk/nugget-ayam-crispy' : '/produk/' . (int) $product['id']; ?>" class="btn">Lihat Detail</a>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
-                <div class="carousel-dots" data-dots-for="<?= htmlspecialchars($carouselKey, ENT_QUOTES, 'UTF-8'); ?>"></div>
-            <?php endif; ?>
+                                <?php if (!empty($product['hashtags'])): ?>
+                                    <div class="tags">
+                                        <?php foreach ($product['hashtags'] as $tag): ?>
+                                            <span>#<?= htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?></span>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <a href="<?= htmlspecialchars($detailUrl, ENT_QUOTES, 'UTF-8'); ?>" class="btn">Lihat Detail</a>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="carousel-dots" data-dots-for="<?= htmlspecialchars(strtolower($category . '-' . $segment), ENT_QUOTES, 'UTF-8'); ?>"></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         <?php endforeach; ?>
     </section>
 </main>

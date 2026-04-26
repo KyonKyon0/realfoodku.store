@@ -120,7 +120,8 @@ body {
 }
 
 
-.category-title { margin: 24px 0 12px; font-size: 1.4rem; }
+.category-title { margin: 24px 0 10px; font-size: 1.4rem; }
+.segment-title { margin: 8px 0 10px; color: #0f766e; font-size: 1rem; }
 .product-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -155,34 +156,7 @@ body {
 }
 .product-card h4 { margin: 10px 0 6px; }
 
-.rating {
-    display: inline-block;
-    margin-bottom: 8px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 700;
-}
-.grade-A{background:#22c55e;color:#fff;}
-.grade-B{background:#65a30d;color:#fff;}
-.grade-C{background:#eab308;color:#111827;}
-.grade-D{background:#f97316;color:#fff;}
-.grade-E{background:#ef4444;color:#fff;}
-.grade-F{background:#7f1d1d;color:#fff;}
-
-.desc { margin: 0 0 8px; color: #334155; min-height: 46px; }
-.ingredient { margin: 0; font-size: .9rem; color: #1e293b; }
-.nutri {
-    margin-top: 8px;
-    background: #f8fbff;
-    border: 1px solid #dbe7f0;
-    border-radius: 10px;
-    padding: 8px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    font-size: .82rem;
-}
+.desc { margin: 0 0 8px; color: #334155; min-height: 42px; }
 .tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
 .tags span { background: #e0f2fe; color: #075985; border-radius: 999px; padding: 3px 8px; font-size: .76rem; font-weight: 600; }
 .btn {
@@ -226,7 +200,6 @@ body {
     .nav nav { display: none; }
     .search { flex-direction: column; }
     .search button { height: 42px; }
-    .nutri { grid-template-columns: 1fr; }
 
     .news-grid {
         grid-template-columns: 1fr;
