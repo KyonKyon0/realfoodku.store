@@ -188,9 +188,6 @@ try {
         <input type="text" name="q" id="searchInput" placeholder="Cari produk, merk, hashtag..." value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
         <button id="searchBtn" type="submit">Cari</button>
     </form>
-    <div class="hero-actions">
-        <a class="hero-link" href="<?= htmlspecialchars($featuredFoodLink, ENT_QUOTES, 'UTF-8'); ?>">Lihat Kumpulan Produk Nugget</a>
-    </div>
 </section>
 
 <main class="shell">
@@ -251,9 +248,13 @@ try {
                             ? ($drinkImageByName[$product['nama_produk']] ?? '/assets/img/drink_default.svg')
                             : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80';
                         $productImageSrc = $product['image_url'] ?: $productFallbackImage;
-                        $detailUrl = $product['nama_produk'] === 'Nugget Ayam Crispy'
-                            ? '/produk/nugget-ayam-crispy'
-                            : '/produk/' . (int) $product['id'];
+                        $detailUrl = '/produk/' . (int) $product['id'];
+                        if ($product['nama_produk'] === 'Nugget Ayam Crispy') {
+                            $detailUrl = '/produk/nugget-ayam-crispy';
+                        }
+                        if ($product['nama_produk'] === 'Diary Milk Original') {
+                            $detailUrl = '/produk/diary-milk-original';
+                        }
                         ?>
                         <article class="product-card">
                             <img class="product-image" src="<?= htmlspecialchars($productImageSrc, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>';" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
