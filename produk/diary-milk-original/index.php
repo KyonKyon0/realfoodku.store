@@ -2,4 +2,6 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../../diary-milk-original.php';
+$_GET['variant'] = 'diary-milk-original';
+
+require __DIR__ . '/../../koleksi-produk.php';
