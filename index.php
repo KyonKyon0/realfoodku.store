@@ -227,51 +227,57 @@ try {
 
         <?php foreach ($productsByCategory as $category => $segments): ?>
             <h3 class="category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?></h3>
+            <?php
+            $flatProducts = [];
+            foreach ($segments as $segmentName => $segmentProducts) {
+                foreach ($segmentProducts as $segmentProduct) {
+                    $segmentProduct['segment'] = $segmentName;
+                    $flatProducts[] = $segmentProduct;
+                }
+            }
+            ?>
 
-            <?php foreach ($segments as $segment => $segmentProducts): ?>
-                <h4 class="segment-title"><?= htmlspecialchars($segment, ENT_QUOTES, 'UTF-8'); ?></h4>
-                <?php if (empty($segmentProducts)): ?>
-                    <div class="alert">Belum ada produk untuk grup <?= strtolower($segment); ?>.</div>
-                <?php else: ?>
-                    <div class="product-grid carousel" data-carousel="<?= htmlspecialchars(strtolower($category . '-' . $segment), ENT_QUOTES, 'UTF-8'); ?>">
-                        <?php foreach ($segmentProducts as $product): ?>
-                            <?php
-                            $drinkImageByName = [
-                                'Soda Jeruk X' => '/assets/img/drink_soda.svg',
-                                'Energy Drink Max' => '/assets/img/drink_energy.svg',
-                            ];
-                            $productFallbackImage = $product['kategori'] === 'Minuman'
-                                ? ($drinkImageByName[$product['nama_produk']] ?? '/assets/img/drink_default.svg')
-                                : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80';
-                            $productImageSrc = $product['image_url'] ?: $productFallbackImage;
-                            $detailUrl = $product['nama_produk'] === 'Nugget Ayam Crispy'
-                                ? '/produk/nugget-ayam-crispy'
-                                : '/produk/' . (int) $product['id'];
-                            ?>
-                            <article class="product-card">
-                                <img class="product-image" src="<?= htmlspecialchars($productImageSrc, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>';" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
-                                <div class="meta-row">
-                                    <span class="chip"><?= htmlspecialchars($product['kategori'], ENT_QUOTES, 'UTF-8'); ?></span>
-                                    <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>
+            <?php if (empty($flatProducts)): ?>
+                <div class="alert">Belum ada produk untuk kategori <?= strtolower($category); ?>.</div>
+            <?php else: ?>
+                <div class="product-grid carousel" data-carousel="<?= htmlspecialchars(strtolower($category), ENT_QUOTES, 'UTF-8'); ?>">
+                    <?php foreach ($flatProducts as $product): ?>
+                        <?php
+                        $drinkImageByName = [
+                            'Soda Jeruk X' => '/assets/img/drink_soda.svg',
+                            'Energy Drink Max' => '/assets/img/drink_energy.svg',
+                        ];
+                        $productFallbackImage = $product['kategori'] === 'Minuman'
+                            ? ($drinkImageByName[$product['nama_produk']] ?? '/assets/img/drink_default.svg')
+                            : 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&q=80';
+                        $productImageSrc = $product['image_url'] ?: $productFallbackImage;
+                        $detailUrl = $product['nama_produk'] === 'Nugget Ayam Crispy'
+                            ? '/produk/nugget-ayam-crispy'
+                            : '/produk/' . (int) $product['id'];
+                        ?>
+                        <article class="product-card">
+                            <img class="product-image" src="<?= htmlspecialchars($productImageSrc, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($productFallbackImage, ENT_QUOTES, 'UTF-8'); ?>';" alt="<?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <div class="meta-row">
+                                <span class="chip"><?= htmlspecialchars($product['segment'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <span class="brand-name"><?= htmlspecialchars($product['merk'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            </div>
+                            <h4><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h4>
+                            <p class="desc"><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
+
+                            <?php if (!empty($product['hashtags'])): ?>
+                                <div class="tags">
+                                    <?php foreach ($product['hashtags'] as $tag): ?>
+                                        <span>#<?= htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <?php endforeach; ?>
                                 </div>
-                                <h4><?= htmlspecialchars($product['nama_produk'], ENT_QUOTES, 'UTF-8'); ?></h4>
-                                <p class="desc"><?= htmlspecialchars($product['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <?php endif; ?>
 
-                                <?php if (!empty($product['hashtags'])): ?>
-                                    <div class="tags">
-                                        <?php foreach ($product['hashtags'] as $tag): ?>
-                                            <span>#<?= htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?></span>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
-
-                                <a href="<?= htmlspecialchars($detailUrl, ENT_QUOTES, 'UTF-8'); ?>" class="btn">Lihat Detail</a>
-                            </article>
-                        <?php endforeach; ?>
-                    </div>
-                    <div class="carousel-dots" data-dots-for="<?= htmlspecialchars(strtolower($category . '-' . $segment), ENT_QUOTES, 'UTF-8'); ?>"></div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                            <a href="<?= htmlspecialchars($detailUrl, ENT_QUOTES, 'UTF-8'); ?>" class="btn">Lihat Detail</a>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+                <div class="carousel-dots" data-dots-for="<?= htmlspecialchars(strtolower($category), ENT_QUOTES, 'UTF-8'); ?>"></div>
+            <?php endif; ?>
         <?php endforeach; ?>
     </section>
 </main>

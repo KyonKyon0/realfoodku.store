@@ -124,7 +124,7 @@ body {
 .segment-title { margin: 8px 0 10px; color: #0f766e; font-size: 1rem; }
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
     align-items: stretch;
 }
@@ -191,6 +191,10 @@ body {
 
 @media (max-width: 1100px) {
     .news-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .product-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
