@@ -44,6 +44,8 @@ CREATE TABLE kandungan_gizi (
     garam_mg DECIMAL(8,2) NOT NULL DEFAULT 0,
     lemak_g DECIMAL(6,2) NOT NULL DEFAULT 0,
     protein_g DECIMAL(6,2) NOT NULL DEFAULT 0,
+    kalsium_mg DECIMAL(8,2) NOT NULL DEFAULT 0,
+    komposisi_utama_persen DECIMAL(5,2) NOT NULL DEFAULT 0,
     takaran_saji VARCHAR(100) NOT NULL,
     FOREIGN KEY (produk_id) REFERENCES produk(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -99,14 +101,18 @@ INSERT INTO produk (nama_produk, merk, kategori, is_demo, deskripsi_singkat, ima
 ('Nugget Ayam Crispy', 'Merk D', 'Makanan', 0, 'Nugget ayam beku dengan tekstur renyah.', 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=1200&q=80', 'B', 'Rp39.000 - Rp57.000', 'https://example.com/beli/nugget-ayam'),
 ('Soda Jeruk X', 'Merk A', 'Minuman', 0, 'Minuman berkarbonasi rasa jeruk.', 'https://images.unsplash.com/photo-1543253539-0b8d2f82b1a6?w=1200&q=80', 'D', 'Rp8.000 - Rp12.000', 'https://example.com/beli/soda-jeruk-x'),
 ('Energy Drink Max', 'Merk E', 'Minuman', 0, 'Minuman energi dengan kafein dan taurin.', 'https://images.unsplash.com/photo-1589918947397-4f4111b7f6a4?w=1200&q=80', 'E', 'Rp9.000 - Rp15.000', 'https://example.com/beli/energy-max'),
+('Bakso Sapi Juara', 'Merk F', 'Makanan', 0, 'Bakso sapi siap masak dengan tekstur kenyal.', 'https://images.unsplash.com/photo-1547592180-85f173990554?w=1200&q=80', 'B', 'Rp28.000 - Rp40.000', 'https://example.com/beli/bakso-sapi-juara'),
+('Diary Milk Original', 'Susu', 'Minuman', 0, 'Minuman susu dan olahan susu harian.', 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1200&q=80', 'A', 'Rp12.000 - Rp18.000', 'https://example.com/beli/diary-milk-original'),
 ('Glow Serum C', 'Merk Kos A', 'Kosmetik', 1, 'Serum pencerah wajah (data demo).', 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&q=80', 'A', 'Rp85.000 - Rp120.000', 'https://example.com/beli/glow-serum-c');
 
-INSERT INTO kandungan_gizi (produk_id, ingredient, energi_kkal, gula_g, garam_mg, lemak_g, protein_g, takaran_saji) VALUES
-(1, 'Daging ayam, pati tapioka, garam, penguat rasa, sodium nitrite (E250)', 190, 2, 760, 13, 9, '75 g'),
-(2, 'Daging ayam, tepung roti, minyak nabati, bumbu rempah', 210, 1, 520, 14, 11, '90 g'),
-(3, 'Air berkarbonasi, gula, perisa jeruk, Sunset Yellow FCF (E110), sodium benzoate', 140, 35, 35, 0, 0, '330 ml'),
-(4, 'Air, gula, kafein, taurin, vitamin B kompleks, Allura Red AC (E129)', 120, 27, 180, 0, 0, '250 ml'),
-(5, 'Aqua, niacinamide, fragrance, colorant sintetis', 0, 0, 0, 0, 0, '20 ml');
+INSERT INTO kandungan_gizi (produk_id, ingredient, energi_kkal, gula_g, garam_mg, lemak_g, protein_g, kalsium_mg, komposisi_utama_persen, takaran_saji) VALUES
+(1, 'Daging ayam, pati tapioka, garam, penguat rasa, sodium nitrite (E250)', 190, 2, 760, 13, 9, 24, 58, '75 g'),
+(2, 'Daging ayam, tepung roti, minyak nabati, bumbu rempah', 210, 1, 520, 14, 11, 35, 62, '90 g'),
+(3, 'Air berkarbonasi, gula, perisa jeruk, Sunset Yellow FCF (E110), sodium benzoate', 140, 35, 35, 0, 0, 8, 12, '330 ml'),
+(4, 'Air, gula, kafein, taurin, vitamin B kompleks, Allura Red AC (E129)', 120, 27, 180, 0, 0, 10, 9, '250 ml'),
+(5, 'Aqua, niacinamide, fragrance, colorant sintetis', 0, 0, 0, 0, 0, 0, 0, '20 ml'),
+(6, 'Daging sapi, tepung tapioka, garam, bawang putih, lada', 170, 1.5, 680, 11, 12, 20, 64, '80 g'),
+(7, 'Susu sapi segar, susu skim bubuk, gula, vitamin D, kalsium', 150, 18, 95, 4.2, 5.1, 280, 78, '250 ml');
 
 INSERT INTO bahan_berbahaya_eropa (nama_bahan, status_eropa, alasan) VALUES
 ('Sunset Yellow FCF (E110)', 'Dibatasi ketat', 'Diduga terkait hiperaktivitas pada anak jika dikonsumsi berlebih.'),
