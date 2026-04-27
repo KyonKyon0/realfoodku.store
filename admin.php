@@ -415,7 +415,7 @@ if ($isLoggedIn) {
 
                 <div class="full row-btns">
                     <button class="btn primary" type="submit"><?= (int) $productForm['id'] > 0 ? 'Update Produk' : 'Tambah Produk'; ?></button>
-                    <a class="btn gray" style="text-decoration:none;" href="/admin">Reset Form</a>
+                    <a class="btn gray" style="text-decoration:none;" href="/admin.php">Reset Form</a>
                 </div>
             </form>
         </section>
