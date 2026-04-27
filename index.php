@@ -164,6 +164,7 @@ try {
         <nav>
             <a href="#berita">Berita</a>
             <a href="#produk">Produk</a>
+            <a href="/admin">Admin</a>
         </nav>
     </div>
 </header>
